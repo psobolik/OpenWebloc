@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Product Id="*" Name="OpenWebloc" Language="1033" Version="1.1.0.0" Manufacturer="Paul Sobolik" UpgradeCode="2ddd1e77-b5a3-47c7-afe0-e39ca17f85d7">
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+		<MediaTemplate />
+
+		<Feature Id="ProductFeature" Title="SetupProject" Level="1">
+			<ComponentGroupRef Id="ProductComponents" />
+		</Feature>
+	</Product>
+
+	<Fragment>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder">
+				<Directory Id="INSTALLFOLDER" Name="OpenWebloc" />
+			</Directory>
+		</Directory>
+	</Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="OpenWeblocComponentGroup" Directory="INSTALLFOLDER">
+      <Component Id="OpenWeblocExeComponent">
+        <File Id="OpenWeblocExe" Name="OpenWebloc.exe" Source="../OpenWebloc/bin/Release/OpenWebloc.exe" KeyPath="yes"/>
+        <ProgId Id='WeblocFile' Description='Apple-style web link'>
+          <Extension Id='webloc' ContentType='application/webloc'>
+            <Verb Id='open' Command='Open' TargetFile='OpenWeblocExe' Argument='"%1"' />
+          </Extension>
+        </ProgId>
+      </Component>
+      <Component Id="OpenWeblocExeConfigComponent">
+        <File Id="OpenWeblocExeConfig" Name="OpenWebloc.exe.config" Source="../OpenWebloc/bin/Release/OpenWebloc.exe.config"/>
+      </Component>
+      <Component Id="OpenWeblocExeManifestComponent">
+        <File Id="OpenWeblocExeManifest" Name="OpenWebloc.exe.manifest" Source="../OpenWebloc/bin/Release/OpenWebloc.exe.manifest"/>
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="NLogComponentGroup" Directory="INSTALLFOLDER">
+      <Component Id="NLogDllComponent">
+        <File Id="NLogDll" Name="NLog.dll" Source="../OpenWebloc/bin/Release/NLog.dll"/>
+      </Component>
+      <Component Id="NLogConfigComponent">
+        <File Id="NLogConfig" Name="NLog.config" Source="../OpenWebloc/bin/Release/NLog.config"/>
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+
+  <Fragment>
+    <Component Id="PlistCSDllComponent" Directory="INSTALLFOLDER">
+      <File Id="PlistCSDll" Name="PlistCS.dll" Source="../OpenWebloc/bin/Release/PlistCS.dll"/>
+    </Component>
+  </Fragment>
+
+  <Fragment>
+    <Component Id="CommandLineDllComponent" Directory="INSTALLFOLDER">
+      <File Id="CommandLineDll" Name="CommandLine.dll" Source="../OpenWebloc/bin/Release/CommandLine.dll"/>
+    </Component>
+  </Fragment>
+
+  <Fragment>
+		<ComponentGroup Id="ProductComponents">
+      <ComponentGroupRef Id="OpenWeblocComponentGroup"/>
+      <ComponentGroupRef Id="NLogComponentGroup"/>
+      <ComponentRef Id="PlistCSDllComponent"/>
+      <ComponentRef Id="CommandLineDllComponent"/>
+		</ComponentGroup>
+	</Fragment>
+</Wix>
